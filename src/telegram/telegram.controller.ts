@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, Query } from '@nestjs/common';
 import { SendTelegramMessageDTO } from './DTO/sendTelegramMessage.dto';
 import { TelegramService } from './telegram.service';
 
@@ -6,9 +6,13 @@ import { TelegramService } from './telegram.service';
 export class TelegramController {
   constructor(private telegramService: TelegramService) {}
   @Get('/send')
-  sendMessage(@Query() parmas: SendTelegramMessageDTO) {
+  async sendMessage(@Query() parmas: SendTelegramMessageDTO) {
     const { message, chatId } = parmas;
-    console.log(chatId, message);
-    this.telegramService.sendMessage(chatId, message);
+    try {
+      await this.telegramService.sendMessage(chatId, message);
+      return 'success';
+    } catch (e) {
+      throw new HttpException('Something went wrong', 500);
+    }
   }
 }

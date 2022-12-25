@@ -1,17 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Bot } from 'grammy';
-import { ParseMode } from 'grammy/out/types.node';
-import { telegramBotApi } from './telegram-bot-api';
+import { telegramSendMessage } from './bot-api-utils';
 @Injectable()
 export class TelegramService {
-  async sendMessage(
-    chatId: string,
-    message: string,
-    parse_mode: ParseMode = 'HTML',
-  ) {
-    console.log('asdsd');
+  async sendMessage(chatId: string, message: string) {
     try {
-      await telegramBotApi.sendMessage(chatId, message, parse_mode);
+      await telegramSendMessage(chatId, message);
       return 'message sent successfully';
     } catch (e) {
       return new HttpException('Send message failed.', 500);
