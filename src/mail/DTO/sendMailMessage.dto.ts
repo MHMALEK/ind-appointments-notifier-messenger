@@ -4,9 +4,12 @@ export class sendMailMessageDTO {
   @IsNotEmpty()
   to: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   text: string;
 
   @IsOptional()
   subject: string;
+
+  @IsOptional()
+  html: string;
 }
